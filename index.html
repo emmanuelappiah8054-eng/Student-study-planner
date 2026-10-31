@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATU Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">ATU</div>
+            <div>
+                <h2>ATU PLANNER</h2>
+                <small>Student Dashboard</small>
+            </div>
+        </div>
+
+        <nav>
+            <p class="nav-heading">MENU</p>
+
+            <button class="nav-link active" data-view="dashboard">
+                <span>▦</span> Dashboard
+            </button>
+
+            <button class="nav-link" data-view="all">
+                <span>☷</span> All Tasks
+            </button>
+
+            <button class="nav-link" data-view="pending">
+                <span>◷</span> Pending Tasks
+            </button>
+
+            <button class="nav-link" data-view="completed">
+                <span>✓</span> Completed Tasks
+            </button>
+
+            <button class="nav-link" data-view="overdue">
+                <span>!</span> Overdue Tasks
+            </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-note">
+                <span>🎓</span>
+                <h3>Keep learning!</h3>
+                <p>Small steps every day lead to big achievements.</p>
+            </div>
+
+            <button id="themeButton" class="theme-button">
+                ☾ Toggle Dark Mode
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <p class="welcome-label">STUDENT WORKSPACE</p>
+                <h1>ATU Study Planner</h1>
+                <p class="subtitle">
+                    Plan your studies. Track your progress. Achieve your goals.
+                </p>
+            </div>
+
+            <div class="date-display" id="todayDate"></div>
+        </header>
+
+        <!-- STATISTICS -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-icon blue">☷</div>
+                <p>Total Tasks</p>
+                <h2 id="totalCount">0</h2>
+                <small>All study activities</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">◷</div>
+                <p>Pending Tasks</p>
+                <h2 id="pendingCount">0</h2>
+                <small>Tasks to complete</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">✓</div>
+                <p>Completed Tasks</p>
+                <h2 id="completedCount">0</h2>
+                <small>Tasks finished</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon red">!</div>
+                <p>Overdue Tasks</p>
+                <h2 id="overdueCount">0</h2>
+                <small>Past their due date</small>
+            </div>
+
+        </section>
+
+        <!-- PROGRESS SECTION -->
+        <section class="progress-card">
+            <div class="progress-heading">
+                <div>
+                    <h2>Study Progress</h2>
+                    <p>Track your overall academic productivity.</p>
+                </div>
+                <strong id="progressPercentage">0%</strong>
+            </div>
+
+            <div class="progress-track">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+
+            <p class="progress-caption" id="progressCaption">
+                You have not completed any tasks yet.
+            </p>
+        </section>
+
+        <!-- ADD TASK SECTION -->
+        <section class="panel add-panel">
+            <div class="section-heading">
+                <div>
+                    <h2>Add New Study Task</h2>
+                    <p>Enter your assignment or study activity below.</p>
+                </div>
+            </div>
+
+            <form id="taskForm">
+                <input type="hidden" id="editId">
+
+                <div class="form-grid">
+
+                    <div class="form-group full-width">
+                        <label for="taskTitle">Task Title *</label>
+                        <input
+                            type="text"
+                            id="taskTitle"
+                            placeholder="e.g. Complete Database Assignment"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskSubject">Subject / Course *</label>
+                        <input
+                            type="text"
+                            id="taskSubject"
+                            placeholder="e.g. Database Management"
+                            maxlength="60"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskDate">Due Date</label>
+                        <input type="date" id="taskDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskPriority">Priority Level</label>
+                        <select id="taskPriority">
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskCategory">Task Type</label>
+                        <select id="taskCategory">
+                            <option value="Assignment">Assignment</option>
+                            <option value="Revision">Revision</option>
+                            <option value="Examination">Examination</option>
+                            <option value="Project">Project</option>
+                            <option value="Reading">Reading</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <p id="errorMessage" class="error-message"></p>
+
+                <div class="form-buttons">
+                    <button type="submit" id="submitButton" class="primary-btn">
+                        + Add Study Task
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cancelButton"
+                        class="secondary-btn"
+                        hidden
+                    >
+                        Cancel Edit
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- TASK MANAGEMENT -->
+        <section class="panel tasks-panel">
+
+            <div class="section-heading task-heading">
+                <div>
+                    <h2 id="listTitle">My Study Tasks</h2>
+                    <p>Manage and organize your academic activities.</p>
+                </div>
+
+                <button id="clearCompleted" class="secondary-btn">
+                    Clear Completed
+                </button>
+            </div>
+
+            <!-- SEARCH AND SORT -->
+            <div class="toolbar">
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Search tasks or subjects..."
+                >
+
+                <select id="sortSelect">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="dueDate">Due Date</option>
+                    <option value="priority">Priority</option>
+                </select>
+            </div>
+
+            <!-- FILTER BUTTONS -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="pending">Pending</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn" data-filter="overdue">Overdue</button>
+            </div>
+
+            <!-- TASK LIST -->
+            <div id="taskList"></div>
+
+            <div id="emptyMessage" class="empty-state">
+                <div class="empty-icon">📚</div>
+                <h3>No study tasks yet</h3>
+                <p>Add your first task to get started!</p>
+            </div>
+
+        </section>
+
+        <footer>
+            <p>ATU Study Planner © 2026 | Stay Focused. Stay Organized.</p>
+        </footer>
+
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
